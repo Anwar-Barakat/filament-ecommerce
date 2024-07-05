@@ -32,7 +32,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Main Info')->schema([
+                    Forms\Components\Section::make('Product Info')->schema([
                         Forms\Components\TextInput::make('name')
                             ->autofocus()
                             ->live(onBlur: true)
@@ -169,8 +169,11 @@ class ProductResource extends Resource
                     ->options(fn () => \App\Models\Brand::pluck('name', 'id')->toArray()),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
