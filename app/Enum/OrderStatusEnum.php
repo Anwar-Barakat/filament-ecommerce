@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum OrderStatusEnum : string
+enum OrderStatusEnum: string
 {
     case PENDING = 'pending';
     case PROCESSING = 'processing';
