@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
@@ -13,4 +15,17 @@ class Order extends Model
     protected $fillable = [
         'customer_id', 'number', 'total_price', 'status', 'shipping_price', 'notes'
     ];
+
+    // Relationships
+    // An order belongs to a customer
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    // An order has many order items
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
