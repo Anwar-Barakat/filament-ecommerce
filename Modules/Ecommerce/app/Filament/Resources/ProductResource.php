@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace Modules\Ecommerce\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -11,9 +11,9 @@ use Illuminate\Support\Str;
 use App\Enum\ProductTypeEnum;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\ProductResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ProductResource\RelationManagers;
+use Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
+use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -22,6 +22,8 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     protected static ?string $navigationGroup = 'Shop';
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Products';
 
@@ -189,7 +191,6 @@ class ProductResource extends Resource
         return [
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
-            'view' => Pages\ViewProduct::route('/{record}'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
