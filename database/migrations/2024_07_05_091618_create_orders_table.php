@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->string('number')->unique();
-            $table->decimal('total_price', 10, 2);
+            $table->decimal('unit_price', 8, 2)->default(0);
+            $table->decimal('total_price', 8, 2)->default(0);
             $table->enum('status', ['pending', 'processing', 'completed', 'declined'])->default('pending');
             $table->decimal('shipping_price')->nullable();
-            $table->longText('notes');
+            $table->longText('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

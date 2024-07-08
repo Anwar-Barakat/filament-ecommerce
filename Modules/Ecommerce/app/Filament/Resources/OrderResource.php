@@ -40,7 +40,6 @@ class OrderResource extends Resource
 
                             Forms\Components\Select::make('customer_id')
                                 ->relationship('customer', 'name')
-                                ->searchable()
                                 ->required()
                                 ->native(),
 
