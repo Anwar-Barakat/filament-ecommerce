@@ -13,4 +13,6 @@ class CategoryProduct extends Pivot
     protected $fillable = [
         'category_id', 'product'
     ];
+
+    public $timestamps = false;
 }

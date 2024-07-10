@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\Ecommerce\Filament\Resources\CategoryResource\Pages;
 use Modules\Ecommerce\Filament\Resources\CategoryResource\RelationManagers;
+use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers\ProductsRelationManager;
 
 class CategoryResource extends Resource
 {
@@ -36,7 +37,7 @@ class CategoryResource extends Resource
                                 ->required()
                                 ->live(onBlur: true)
                                 ->unique()
-                                ->afterStateUpdated(function(string $operation, $state, Forms\Set $set) {
+                                ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                                     if ($operation !== 'create') {
                                         return;
                                     }
@@ -122,7 +123,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProductsRelationManager::class,
         ];
     }
 
