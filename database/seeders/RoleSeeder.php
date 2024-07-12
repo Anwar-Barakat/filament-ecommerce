@@ -16,17 +16,17 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            'super-admin',
-            'admin',
-            'editor',
-            'author',
-            'contributor',
-            'subscriber',
+            ['name' => 'super-admin', 'slug' => 'super-admin'],
+            ['name' => 'admin', 'slug' => 'admin'],
+            ['name' => 'editor', 'slug' => 'editor'],
+            ['name' => 'author', 'slug' => 'author'],
+            ['name' => 'contributor', 'slug' => 'contributor'],
+            ['name' => 'subscriber', 'slug' => 'subscriber'],
         ];
 
         foreach ($roles as $role) {
-            if (is_null(Role::where('name', $role)->first())) {
-                Role::create(['name' => $role]);
+            if (is_null(Role::where('slug', $role)->first())) {
+                Role::create($role);
             }
         }
 
@@ -34,6 +34,7 @@ class RoleSeeder extends Seeder
             'name'      => 'Anwar',
             'email'     => 'admin@admin.com',
             'password'  => Hash::make('123456'),
+            'email_verified_at' => now(),
         ]);
 
         $admin->assignRole('super-admin');
