@@ -1,6 +1,6 @@
 <x-filament-panels::form wire:submit="updateCustomFields">
-    {{ $this->form }}
-
+    {{-- {{ $this->form }} --}}
+    @dump($this->form)
     <div class="fi-form-actions">
         <div class="flex flex-row-reverse flex-wrap items-center gap-3 fi-ac">
             <x-filament::button type="submit">
