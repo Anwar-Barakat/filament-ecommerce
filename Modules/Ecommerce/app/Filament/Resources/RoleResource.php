@@ -18,7 +18,7 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+    protected static ?string $navigationIcon = 'heroicon-o-finger-print';
 
     protected static ?int $navigationSort = 1;
 
@@ -50,6 +50,16 @@ class RoleResource extends Resource
                             ->unique(Role::class, 'slug', ignoreRecord: true),
                     ])->columns(2),
                 ])->columnSpanFull(),
+
+                Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Permissions Info')->schema([
+                        Forms\Components\CheckboxList::make('permissions')
+                            ->relationship('permissions', 'name')
+                            ->label('Permissions')
+                            ->required()
+                            ->columns(1)
+                    ]),
+                ])->columnSpanFull(),
             ]);
     }
 
@@ -65,7 +75,11 @@ class RoleResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -88,5 +102,10 @@ class RoleResource extends Resource
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('slug', '!=', 'admin')->where('slug', '!=', 'super-admin');
     }
 }
