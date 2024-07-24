@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\CMS\Http\Controllers;
+namespace Modules\Blog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CMSController extends Controller
+class BlogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('cms::index');
+        return view('blog::index');
     }
 
     /**
@@ -22,7 +22,7 @@ class CMSController extends Controller
      */
     public function create()
     {
-        return view('cms::create');
+        return view('blog::create');
     }
 
     /**
@@ -38,7 +38,7 @@ class CMSController extends Controller
      */
     public function show($id)
     {
-        return view('cms::show');
+        return view('blog::show');
     }
 
     /**
@@ -46,7 +46,7 @@ class CMSController extends Controller
      */
     public function edit($id)
     {
-        return view('cms::edit');
+        return view('blog::edit');
     }
 
     /**

@@ -1,11 +1,11 @@
 {
-    "name": "CMS",
-    "alias": "cms",
+    "name": "Blog",
+    "alias": "blog",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\CMS\\Providers\\CMSServiceProvider"
+        "Modules\\Blog\\Providers\\BlogServiceProvider"
     ],
     "files": []
 }
