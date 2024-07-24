@@ -2,8 +2,15 @@
 
 namespace Modules\Ecommerce\Providers;
 
+use App\Models\Permission;
 use Illuminate\Support\Facades\Blade;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Modules\Ecommerce\Policies\PermissionPolicy;
+use Modules\Ecommerce\Policies\RolePolicy;
+use Modules\Ecommerce\Policies\UserPolicy;
+use Spatie\Permission\Models\Role;
 
 class EcommerceServiceProvider extends ServiceProvider
 {
@@ -22,6 +29,11 @@ class EcommerceServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
+
+
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(Role::class, RolePolicy::class);
+        Gate::policy(Permission::class, PermissionPolicy::class);
     }
 
     /**

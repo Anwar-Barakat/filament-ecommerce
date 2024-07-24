@@ -51,6 +51,15 @@ class UserResource extends Resource
                     ->required(),
 
                 Forms\Components\Group::make()->schema([
+                    Forms\Components\Section::make('Roles Info')->schema([
+                        Forms\Components\CheckboxList::make('roles')
+                            ->relationship('roles', 'name')
+                            ->label('roles')
+                            ->required()
+                            ->columns(1)
+                    ]),
+                ])->columnSpanFull(),
+                Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Permissions Info')->schema([
                         Forms\Components\CheckboxList::make('permissions')
                             ->relationship('permissions', 'name')

@@ -2,13 +2,13 @@
 
 namespace Modules\Ecommerce\Filament\Resources;
 
+use App\Models\Role;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
-use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\Ecommerce\Filament\Resources\RoleResource\Pages;
