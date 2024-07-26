@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,7 +19,11 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+
+    protected static ?string $navigationGroup = 'Blog';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -56,13 +61,21 @@ class PostResource extends Resource
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->required()
+                            ->native(false)
+                            ->searchable()
                             ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray()),
 
-
-                        Forms\Components\Select::make('category_id')
-                            ->relationship('category', 'title')
+                        Forms\Components\Select::make('categories')
+                            ->relationship('categories', 'title')
                             ->required()
+                            ->multiple()
+                            ->native(false)
+                            ->searchable()
                             ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
+
+                        // Forms\Components\Select::make('categories')
+                        //     ->multiple()
+                        //     ->relationship('categories', 'title'),
                         Forms\Components\TextInput::make('meta_description')
                             ->maxLength(255),
                         Forms\Components\Toggle::make('is_published')
@@ -70,6 +83,26 @@ class PostResource extends Resource
                         Forms\Components\DateTimePicker::make('published_at'),
                     ])
                 ]),
+                Forms\Components\Section::make()->schema([
+
+                    Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                        ->image()
+                        ->imageEditor()
+                        ->collection('posts')
+                        ->rules(['file', 'mimes:jpeg,png', 'max:1024'])
+                        ->afterStateUpdated(function ($state, $component) {
+                            if ($state) {
+                                \Log::info('Image uploaded: ' . $state);
+                            }
+                        })
+                        ->optimize('webp'),
+
+                    Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+                        ->image()
+                        ->imageEditor()
+                        ->collection('posts_gallery')
+                        ->multiple()
+                ])->columns(2),
             ]);
     }
 
@@ -77,24 +110,18 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
+                    ->collection('posts'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category.title')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('categories.title')->searchable()->badge(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('meta_description')
-                    ->searchable(),
                 Tables\Columns\IconColumn::make('is_published')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -102,12 +129,12 @@ class PostResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                // Tables\Filters\SelectFilter::make('categories')
+                //     ->multiple()
+                //     ->relationship('categories', 'title'),
+
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Published')
                     ->boolean()
@@ -115,10 +142,10 @@ class PostResource extends Resource
                     ->falseLabel('Draft')
                     ->native(false),
 
-                Tables\Filters\SelectFilter::make('category')
-                    ->relationship('category', 'title')
-                    ->label('Category')
-                    ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
+                // Tables\Filters\SelectFilter::make('category')
+                //     ->relationship('category', 'title')
+                //     ->label('Category')
+                //     ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
