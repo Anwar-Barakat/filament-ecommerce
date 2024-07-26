@@ -6,6 +6,7 @@ use Modules\Blog\Filament\Resources\PostResource\Pages;
 use Modules\Blog\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,8 +30,8 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Post Info')->schema([
+                Forms\Components\Tabs::make('post')->tabs([
+                    Tab::make('Content')->schema([
                         Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
@@ -53,11 +54,9 @@ class PostResource extends Resource
                         Forms\Components\RichEditor::make('content')
                             ->required()
                             ->columnSpanFull(),
-                    ])
-                ]),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Relations')->schema([
+                    ])->columns(2),
 
+                    Tab::make('Meta')->schema([
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->required()
@@ -73,36 +72,35 @@ class PostResource extends Resource
                             ->searchable()
                             ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
 
-                        // Forms\Components\Select::make('categories')
-                        //     ->multiple()
-                        //     ->relationship('categories', 'title'),
                         Forms\Components\TextInput::make('meta_description')
                             ->maxLength(255),
+
+                        Forms\Components\DateTimePicker::make('published_at')
+                            ->required()
+                            ->displayFormat('Y-m-d H:i:s'),
                         Forms\Components\Toggle::make('is_published')
                             ->required(),
-                        Forms\Components\DateTimePicker::make('published_at'),
-                    ])
-                ]),
-                Forms\Components\Section::make()->schema([
+                    ])->columns(2),
+                    Tab::make('Media')->schema([
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                            ->image()
+                            ->imageEditor()
+                            ->collection('posts')
+                            ->rules(['file', 'mimes:jpeg,png', 'max:1024'])
+                            ->afterStateUpdated(function ($state, $component) {
+                                if ($state) {
+                                    \Log::info('Image uploaded: ' . $state);
+                                }
+                            })
+                            ->optimize('webp'),
 
-                    Forms\Components\SpatieMediaLibraryFileUpload::make('image')
-                        ->image()
-                        ->imageEditor()
-                        ->collection('posts')
-                        ->rules(['file', 'mimes:jpeg,png', 'max:1024'])
-                        ->afterStateUpdated(function ($state, $component) {
-                            if ($state) {
-                                \Log::info('Image uploaded: ' . $state);
-                            }
-                        })
-                        ->optimize('webp'),
-
-                    Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
-                        ->image()
-                        ->imageEditor()
-                        ->collection('posts_gallery')
-                        ->multiple()
-                ])->columns(2),
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+                            ->image()
+                            ->imageEditor()
+                            ->collection('posts_gallery')
+                            ->multiple()
+                    ])->columns(2)
+                ])->columnSpanFull(),
             ]);
     }
 
