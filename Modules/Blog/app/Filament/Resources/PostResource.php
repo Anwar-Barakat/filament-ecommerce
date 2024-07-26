@@ -5,6 +5,7 @@ namespace Modules\Blog\Filament\Resources;
 use Modules\Blog\Filament\Resources\PostResource\Pages;
 use Modules\Blog\Filament\Resources\PostResource\RelationManagers;
 use App\Models\Post;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
@@ -64,13 +65,11 @@ class PostResource extends Resource
                             ->searchable()
                             ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray()),
 
-                        Forms\Components\Select::make('categories')
-                            ->relationship('categories', 'title')
+                        SelectTree::make('categories')
+                            ->relationship('categories', 'title', 'parent_id')
                             ->required()
-                            ->multiple()
-                            ->native(false)
                             ->searchable()
-                            ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
+                            ->enableBranchNode(),
 
                         Forms\Components\TextInput::make('meta_description')
                             ->maxLength(255),
@@ -99,6 +98,7 @@ class PostResource extends Resource
                             ->imageEditor()
                             ->collection('posts_gallery')
                             ->multiple()
+                            ->optimize('webp')
                     ])->columns(2)
                 ])->columnSpanFull(),
             ]);

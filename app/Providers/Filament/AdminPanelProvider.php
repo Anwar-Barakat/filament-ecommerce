@@ -65,6 +65,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+
+                \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -72,6 +74,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 ModulesPlugin::make(),
                 SpotlightPlugin::make(),
+                \Hasnayeen\Themes\ThemesPlugin::make(),
                 FilamentEditProfilePlugin::make()
                     ->slug('my-profile')
                     ->setTitle('My Profile')

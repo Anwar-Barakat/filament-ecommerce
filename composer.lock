@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ccfad264f780178f48d383ef0824bcd",
+    "content-hash": "309306cc5b7827647362db7e7c60d014",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -350,6 +350,77 @@
                 }
             ],
             "time": "2023-12-11T17:09:12+00:00"
+        },
+        {
+            "name": "codewithdennis/filament-select-tree",
+            "version": "v3.1.42",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CodeWithDennis/filament-select-tree.git",
+                "reference": "c7d3f75f4dd36e335c7a1e9a9851dea1b830cc1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CodeWithDennis/filament-select-tree/zipball/c7d3f75f4dd36e335c7a1e9a9851dea1b830cc1a",
+                "reference": "c7d3f75f4dd36e335c7a1e9a9851dea1b830cc1a",
+                "shasum": ""
+            },
+            "require": {
+                "filament/forms": "^3.0",
+                "illuminate/contracts": "^10.0|^11.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^7.9",
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "CodeWithDennis\\FilamentSelectTree\\FilamentSelectTreeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CodeWithDennis\\FilamentSelectTree\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CodeWithDennis",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The multi-level select field enables you to make single selections from a predefined list of options that are organized into multiple levels or depths.",
+            "homepage": "https://github.com/codewithdennis/filament-select-tree",
+            "keywords": [
+                "CodeWithDennis",
+                "filament",
+                "filament-select-tree",
+                "laravel",
+                "tree"
+            ],
+            "support": {
+                "issues": "https://github.com/codewithdennis/filament-select-tree/issues",
+                "source": "https://github.com/codewithdennis/filament-select-tree"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/CodeWithDennis",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-07-08T07:56:28+00:00"
         },
         {
             "name": "composer/semver",
@@ -2406,6 +2477,82 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "hasnayeen/themes",
+            "version": "v3.0.23",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Hasnayeen/themes.git",
+                "reference": "6f5cc1719719591d31c30e6f971fe5cede7aa000"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Hasnayeen/themes/zipball/6f5cc1719719591d31c30e6f971fe5cede7aa000",
+                "reference": "6f5cc1719719591d31c30e6f971fe5cede7aa000",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "illuminate/contracts": "^10.0|^11.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.9",
+                "nunomaduro/larastan": "^2.0.1",
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Hasnayeen\\Themes\\ThemesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hasnayeen\\Themes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hasnayeen",
+                    "email": "searching.nehal@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Themes for Filament panels",
+            "homepage": "https://github.com/hasnayeen/themes",
+            "keywords": [
+                "Hasnayeen",
+                "filament",
+                "laravel",
+                "themes"
+            ],
+            "support": {
+                "issues": "https://github.com/hasnayeen/themes/issues",
+                "source": "https://github.com/hasnayeen/themes"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Hasnayeen",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-10T06:31:54+00:00"
         },
         {
             "name": "intervention/image",
