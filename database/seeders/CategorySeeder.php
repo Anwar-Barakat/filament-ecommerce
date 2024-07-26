@@ -15,28 +15,28 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Electronics',
+                'title' => 'Electronics',
                 'slug' => Str::slug('Electronics'),
                 'parent_id' => null,
                 'is_visible' => true,
                 'description' => 'Electronic devices and gadgets'
             ],
             [
-                'name' => 'Books',
+                'title' => 'Books',
                 'slug' => Str::slug('Books'),
                 'parent_id' => null,
                 'is_visible' => true,
                 'description' => 'Various kinds of books'
             ],
             [
-                'name' => 'Clothing',
+                'title' => 'Clothing',
                 'slug' => Str::slug('Clothing'),
                 'parent_id' => null,
                 'is_visible' => true,
                 'description' => 'Men and women clothing'
             ],
             [
-                'name' => 'Home & Kitchen',
+                'title' => 'Home & Kitchen',
                 'slug' => Str::slug('Home & Kitchen'),
                 'parent_id' => null,
                 'is_visible' => true,

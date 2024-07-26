@@ -33,7 +33,7 @@ class CategoryResource extends Resource
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make([
-                            Forms\Components\TextInput::make('name')
+                            Forms\Components\TextInput::make('title')
                                 ->required()
                                 ->live(onBlur: true)
                                 ->unique()
@@ -66,13 +66,13 @@ class CategoryResource extends Resource
                                     ->default(true),
 
                                 Forms\Components\Select::make('parent_id')
-                                    ->relationship('parent', 'name')
+                                    ->relationship('parent', 'title')
                                     ->label('Parent Category')
                                     ->placeholder('Select a parent category')
                                     ->nullable()
                                     ->options(function (callable $get) {
                                         $categoryId = $get('id');
-                                        return Category::query()->where('id', '!=', $categoryId)->pluck('name', 'id');
+                                        return Category::query()->where('id', '!=', $categoryId)->pluck('title', 'id');
                                     })
                             ])
                     ])
@@ -84,11 +84,11 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('parent.name')
+                Tables\Columns\TextColumn::make('parent.title')
                     ->label('Parent')
                     ->searchable()
                     ->sortable(),

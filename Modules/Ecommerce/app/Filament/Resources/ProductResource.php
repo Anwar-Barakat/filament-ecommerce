@@ -28,7 +28,7 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'title';
 
     protected static int $globalSearchResultsLimit = 20;
 
@@ -42,8 +42,7 @@ class ProductResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            // 'name'      => $record->name,
-            'brand'     => $record->brand->name,
+            'brand'     => $record->brand->title,
         ];
     }
 
@@ -58,11 +57,11 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Product Info')->schema([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
                             ->unique()
-                            ->placeholder('Enter product name')
+                            ->placeholder('Enter product title')
                             ->required()
                             ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                                 if ($operation !== 'create') {
@@ -135,7 +134,7 @@ class ProductResource extends Resource
 
                     Forms\Components\Section::make('Associations')->schema([
                         Forms\Components\Select::make('brand_id')
-                            ->relationship('brand', 'name')
+                            ->relationship('brand', 'title')
                             ->label('Brand')
                             ->required(),
                     ]),
@@ -150,11 +149,11 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image'),
 
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('brand.name')
+                Tables\Columns\TextColumn::make('brand.title')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
@@ -189,9 +188,9 @@ class ProductResource extends Resource
                     ->native(false),
 
                 Tables\Filters\SelectFilter::make('brand')
-                    ->relationship('brand', 'name')
+                    ->relationship('brand', 'title')
                     ->label('Brand')
-                    ->options(fn () => \App\Models\Brand::pluck('name', 'id')->toArray()),
+                    ->options(fn () => \App\Models\Brand::pluck('title', 'id')->toArray()),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

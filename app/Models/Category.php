@@ -13,7 +13,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'slug', 'parent_id', 'is_visible', 'description'
+        'title', 'slug', 'parent_id', 'is_visible', 'description'
     ];
 
     // Relationships

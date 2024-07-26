@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class PostResource extends Resource
 {
@@ -24,13 +25,26 @@ class PostResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Brand Info')->schema([
+                    Forms\Components\Section::make('Post Info')->schema([
                         Forms\Components\TextInput::make('title')
+                            ->autofocus()
+                            ->live(onBlur: true)
+                            ->unique()
+                            ->placeholder('Enter Post Title')
                             ->required()
-                            ->maxLength(255),
+                            ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                if ($operation !== 'create') {
+                                    return;
+                                }
+                                $set('slug', Str::slug($state));
+                            }),
+
                         Forms\Components\TextInput::make('slug')
+                            ->disabled()
+                            ->dehydrated()
                             ->required()
-                            ->maxLength(255),
+                            ->unique(Post::class, 'slug', ignoreRecord: true),
+
                         Forms\Components\RichEditor::make('content')
                             ->required()
                             ->columnSpanFull(),
@@ -38,12 +52,17 @@ class PostResource extends Resource
                 ]),
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Relations')->schema([
+
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
-                            ->required(),
+                            ->required()
+                            ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray()),
+
+
                         Forms\Components\Select::make('category_id')
-                            ->relationship('category', 'name')
-                            ->required(),
+                            ->relationship('category', 'title')
+                            ->required()
+                            ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
                         Forms\Components\TextInput::make('meta_description')
                             ->maxLength(255),
                         Forms\Components\Toggle::make('is_published')
