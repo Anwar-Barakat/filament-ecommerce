@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
 
         $admin = User::create([
             'name'      => 'Anwar',
-            'email'     => 'admin@admin.com',
+            'email'     => 'admin@gmail.com',
             'password'  => Hash::make('123456'),
             'email_verified_at' => now(),
         ]);
