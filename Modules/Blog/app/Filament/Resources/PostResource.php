@@ -80,7 +80,7 @@ class PostResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('category.title')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
@@ -108,7 +108,17 @@ class PostResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('is_published')
+                    ->label('Published')
+                    ->boolean()
+                    ->trueLabel('Published')
+                    ->falseLabel('Draft')
+                    ->native(false),
+
+                Tables\Filters\SelectFilter::make('category')
+                    ->relationship('category', 'title')
+                    ->label('Category')
+                    ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
