@@ -35,20 +35,20 @@ class CategoryResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->required()
                                     ->live(onBlur: true)
-                                    ->unique()
                                     ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                                         if ($operation !== 'create') {
                                             return;
                                         }
-
                                         $set('slug', Str::slug($state));
-                                    }),
+                                    })
+                                    ->unique(Category::class, 'title', ignoreRecord:true),
+
 
                                 Forms\Components\TextInput::make('slug')
                                     ->disabled()
                                     ->dehydrated()
                                     ->required()
-                                    ->unique(Product::class, 'slug', ignoreRecord: true),
+                                    ->unique(Category::class, 'slug', ignoreRecord:true),
 
                                 Forms\Components\MarkdownEditor::make('description')
                                     ->columnSpanFull()
