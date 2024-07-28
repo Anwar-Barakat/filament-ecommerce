@@ -1,1 +1,3 @@
-R-Mart
+<a href="/admin">
+    R-Mart
+</a>

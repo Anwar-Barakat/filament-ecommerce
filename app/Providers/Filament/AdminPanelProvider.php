@@ -7,6 +7,8 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -21,6 +23,15 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Modules\Blog\Filament\Resources\PostResource;
+use Modules\Ecommerce\Filament\Resources\BrandResource;
+use Modules\Ecommerce\Filament\Resources\CategoryResource;
+use Modules\Ecommerce\Filament\Resources\CustomerResource;
+use Modules\Ecommerce\Filament\Resources\OrderResource;
+use Modules\Ecommerce\Filament\Resources\PermissionResource;
+use Modules\Ecommerce\Filament\Resources\ProductResource;
+use Modules\Ecommerce\Filament\Resources\RoleResource;
+use Modules\Ecommerce\Filament\Resources\UserResource;
 use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -41,7 +52,8 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->globalSearchKeyBindings([
-                'command+k', 'ctrl+k',
+                'command+k',
+                'ctrl+k',
             ])
             ->font('Poppins')
             ->favicon(asset('favicon.ico'))
@@ -50,6 +62,25 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->navigation(function(NavigationBuilder $navigation) : NavigationBuilder{
+                return $navigation->groups([
+                    NavigationGroup::make('Management')->items([
+                        ...CategoryResource::getNavigationItems(),
+                        ...UserResource::getNavigationItems(),
+                        ...RoleResource::getNavigationItems(),
+                        ...PermissionResource::getNavigationItems(),
+                    ]),
+                    NavigationGroup::make('Shop')->items([
+                        ...ProductResource::getNavigationItems(),
+                        ...BrandResource::getNavigationItems(),
+                        ...OrderResource::getNavigationItems(),
+                        ...CustomerResource::getNavigationItems(),
+                    ]),
+                    NavigationGroup::make('Blog')->items([
+                        ...PostResource::getNavigationItems(),
+                    ]),
+                ]);
+            })
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -79,7 +110,7 @@ class AdminPanelProvider extends PanelProvider
                     ->slug('my-profile')
                     ->setTitle('My Profile')
                     ->setNavigationLabel('My Profile')
-                    ->setNavigationGroup('Setting')
+                    ->setNavigationGroup('Management')
                     ->setIcon('heroicon-o-user')
                     ->setSort(10)
                     ->shouldShowDeleteAccountForm(true)
@@ -88,8 +119,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->userMenuItems([
                 'profile' => MenuItem::make()
-                    ->label(fn () => auth()->user()?->name)
-                    ->url(fn (): string => EditProfilePage::getUrl())
+                    ->label(fn() => auth()->user()?->name)
+                    ->url(fn(): string => EditProfilePage::getUrl())
                     ->icon('heroicon-m-user-circle')
             ]);
     }

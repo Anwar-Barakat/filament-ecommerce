@@ -23,10 +23,6 @@ class PostResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
-    protected static ?string $navigationGroup = 'Blog';
-
-    protected static ?int $navigationSort = 1;
-
     public static function form(Form $form): Form
     {
         return $form
@@ -111,7 +107,6 @@ class PostResource extends Resource
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
                     ->collection('posts'),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('categories.title')->searchable()->badge(),
                 Tables\Columns\TextColumn::make('title')
@@ -129,9 +124,10 @@ class PostResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                // Tables\Filters\SelectFilter::make('categories')
-                //     ->multiple()
-                //     ->relationship('categories', 'title'),
+                Tables\Filters\SelectFilter::make('categories')
+                    ->relationship('categories', 'title')
+                    ->native(false)
+                    ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()) ,
 
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Published')
@@ -139,11 +135,6 @@ class PostResource extends Resource
                     ->trueLabel('Published')
                     ->falseLabel('Draft')
                     ->native(false),
-
-                // Tables\Filters\SelectFilter::make('category')
-                //     ->relationship('category', 'title')
-                //     ->label('Category')
-                //     ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

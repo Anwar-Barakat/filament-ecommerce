@@ -2,7 +2,6 @@
 
 namespace Modules\Ecommerce\Filament\Resources;
 
-use App\Models\Role;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -13,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\Ecommerce\Filament\Resources\RoleResource\Pages;
 use Modules\Ecommerce\Filament\Resources\RoleResource\RelationManagers;
+use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
