@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+// Spatie
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class Category extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'title', 'slug', 'parent_id', 'is_visible', 'description'
@@ -25,7 +29,7 @@ class Category extends Model
     }
 
     // A category belongs to a parent category
-    public function parent(): BelongsTo
+    public function parentCategory(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }

@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
 use App\Models\Category;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -26,35 +27,34 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make([
-                            Forms\Components\TextInput::make('title')
-                                ->required()
-                                ->live(onBlur: true)
-                                ->unique()
-                                ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
-                                    if ($operation !== 'create') {
-                                        return;
-                                    }
+                Forms\Components\Tabs::make('post')->tabs([
+                    Tab::make('Content')->schema([
+                        Forms\Components\Group::make()
+                            ->schema([
 
-                                    $set('slug', Str::slug($state));
-                                }),
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->unique()
+                                    ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
+                                        if ($operation !== 'create') {
+                                            return;
+                                        }
 
-                            Forms\Components\TextInput::make('slug')
-                                ->disabled()
-                                ->dehydrated()
-                                ->required()
-                                ->unique(Product::class, 'slug', ignoreRecord: true),
+                                        $set('slug', Str::slug($state));
+                                    }),
 
-                            Forms\Components\MarkdownEditor::make('description')
-                                ->columnSpanFull()
-                        ])->columns(2)
-                    ]),
+                                Forms\Components\TextInput::make('slug')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->required()
+                                    ->unique(Product::class, 'slug', ignoreRecord: true),
 
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make('Status')
+                                Forms\Components\MarkdownEditor::make('description')
+                                    ->columnSpanFull()
+                            ])->columns(2),
+
+                        Forms\Components\Group::make()
                             ->schema([
                                 Forms\Components\Toggle::make('is_visible')
                                     ->label('Visibility')
@@ -62,7 +62,7 @@ class CategoryResource extends Resource
                                     ->default(true),
 
                                 Forms\Components\Select::make('parent_id')
-                                    ->relationship('parent', 'title')
+                                    ->relationship('parentCategory', 'title')
                                     ->label('Parent Category')
                                     ->placeholder('Select a parent category')
                                     ->nullable()
@@ -70,8 +70,29 @@ class CategoryResource extends Resource
                                         $categoryId = $get('id');
                                         return Category::query()->where('id', '!=', $categoryId)->pluck('title', 'id');
                                     })
-                            ])
-                    ])
+                            ]),
+                    ])->columns(2),
+                    Tab::make('Media')->schema([
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
+                            ->image()
+                            ->imageEditor()
+                            ->collection('categories')
+                            ->rules(['file', 'mimes:jpeg,png', 'max:1024'])
+                            ->afterStateUpdated(function ($state, $component) {
+                                if ($state) {
+                                    \Log::info('Image uploaded: ' . $state);
+                                }
+                            })
+                            ->optimize('webp'),
+
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+                            ->image()
+                            ->imageEditor()
+                            ->collection('categories_gallery')
+                            ->multiple()
+                            ->optimize('webp')
+                    ])->columns(2)
+                ])->columnSpanFull()
             ]);
     }
 
@@ -84,7 +105,7 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('parent.title')
+                Tables\Columns\TextColumn::make('parentCategory.title')
                     ->label('Parent')
                     ->searchable()
                     ->sortable(),
