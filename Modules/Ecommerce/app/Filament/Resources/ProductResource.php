@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Enum\ProductTypeEnum;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\Tabs\Tab;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -77,6 +78,13 @@ class ProductResource extends Resource
                             ->relationship('brand', 'title')
                             ->label('Brand')
                             ->required(),
+
+                        SelectTree::make('categories')
+                            ->relationship('categories', 'title', 'parent_id')
+                            ->required()
+                            ->searchable()
+                            ->enableBranchNode(),
+
                         Forms\Components\MarkdownEditor::make('description')->columnSpan(2),
                         Forms\Components\TextInput::make('mete_description')->columnSpan(2),
                     ])->columns(2),
