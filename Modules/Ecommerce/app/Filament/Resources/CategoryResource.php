@@ -101,6 +101,7 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')->collection('categories'),
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),

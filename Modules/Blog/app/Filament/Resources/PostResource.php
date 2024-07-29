@@ -104,8 +104,7 @@ class PostResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')
-                    ->collection('posts'),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('image')->collection('posts'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('categories.title')->searchable()->badge(),

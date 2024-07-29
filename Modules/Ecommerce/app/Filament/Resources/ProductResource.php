@@ -9,10 +9,12 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Enum\ProductTypeEnum;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Log;
 use Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
 use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers;
 
@@ -51,8 +53,8 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Product Info')->schema([
+                Forms\Components\Tabs::make('post')->tabs([
+                    Tab::make('Product Info')->schema([
                         Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
@@ -71,11 +73,14 @@ class ProductResource extends Resource
                             ->dehydrated()
                             ->required()
                             ->unique(Product::class, 'slug', ignoreRecord: true),
-
+                        Forms\Components\Select::make('brand_id')
+                            ->relationship('brand', 'title')
+                            ->label('Brand')
+                            ->required(),
                         Forms\Components\MarkdownEditor::make('description')->columnSpan(2),
+                        Forms\Components\TextInput::make('mete_description')->columnSpan(2),
                     ])->columns(2),
-
-                    Forms\Components\Section::make('Pricing & Inventory')->schema([
+                    Tab::make('Pricing & Inventory')->schema([
                         Forms\Components\TextInput::make('sku')
                             ->label('SKU (Stock Keeping Unit)')
                             ->placeholder('Enter product SKU')
@@ -97,12 +102,9 @@ class ProductResource extends Resource
                             'downloadable' => ProductTypeEnum::DOWNLOADABLE->value,
                             'deliverable' => ProductTypeEnum::DELIVERABLE->value,
                         ])->required(),
-
-
                     ])->columns(2),
-                ]),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Status')->schema([
+
+                    Tab::make('Status')->schema([
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visibility')
                             ->helperText('Enable or disable product visibility')
@@ -116,26 +118,28 @@ class ProductResource extends Resource
                             ->label('Availability')
                             ->default(now())
                             ->columnSpan(2),
-
                     ])->columns(2),
-
-                    Forms\Components\Section::make('Attachments')->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->directory('form-attachments')
-                            ->preserveFilenames()
+                    Tab::make('Media')->schema([
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('image')
                             ->image()
                             ->imageEditor()
-                            ->required(),
-                    ])->collapsible(),
+                            ->collection('products')
+                            ->rules(['file', 'mimes:jpeg,png', 'max:1024'])
+                            ->afterStateUpdated(function ($state, $component) {
+                                if ($state) {
+                                    Log::info('Image uploaded: ' . $state);
+                                }
+                            })
+                            ->optimize('webp'),
 
-                    Forms\Components\Section::make('Associations')->schema([
-                        Forms\Components\Select::make('brand_id')
-                            ->relationship('brand', 'title')
-                            ->label('Brand')
-                            ->required(),
-                    ]),
-                ]),
-
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('gallery')
+                            ->image()
+                            ->imageEditor()
+                            ->collection('products_gallery')
+                            ->multiple()
+                            ->optimize('webp')
+                    ])->columns(2)
+                ])->columnSpanFull()
             ]);
     }
 
@@ -143,7 +147,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\SpatieMediaLibraryImageColumn::make('thumbnail')->collection('products'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->searchable()
