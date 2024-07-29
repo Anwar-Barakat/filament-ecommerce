@@ -1,6 +1,7 @@
 <?php
 
-namespace Modules\Ecommerce\Database\Seeders;
+namespace Modules\Ecommerce\database\seeders;
+
 
 use Illuminate\Database\Seeder;
 

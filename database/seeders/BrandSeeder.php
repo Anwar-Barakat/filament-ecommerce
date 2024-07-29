@@ -19,7 +19,7 @@ class BrandSeeder extends Seeder
         // Array of brand data
         $brands = [
             [
-                'name' => 'Brand 1',
+                'title' => 'Brand 1',
                 'slug' => 'brand-1',
                 'url' => 'https://example.com/brand-1',
                 'primary_hex' => '#000000',
@@ -28,7 +28,7 @@ class BrandSeeder extends Seeder
 
             ],
             [
-                'name' => 'Brand 2',
+                'title' => 'Brand 2',
                 'slug' => 'brand-2',
                 'url' => 'https://example.com/brand-2',
                 'primary_hex' => '#FF0000',
@@ -37,7 +37,7 @@ class BrandSeeder extends Seeder
 
             ],
             [
-                'name' => 'Brand 3',
+                'title' => 'Brand 3',
                 'slug' => 'brand-3',
                 'url' => 'https://example.com/brand-3',
                 'primary_hex' => '#00FF00',
@@ -46,7 +46,7 @@ class BrandSeeder extends Seeder
 
             ],
             [
-                'name' => 'Brand 4',
+                'title' => 'Brand 4',
                 'slug' => 'brand-4',
                 'url' => 'https://example.com/brand-4',
                 'primary_hex' => '#0000FF',
@@ -55,7 +55,7 @@ class BrandSeeder extends Seeder
 
             ],
             [
-                'name' => 'Brand 5',
+                'title' => 'Brand 5',
                 'slug' => 'brand-5',
                 'url' => 'https://example.com/brand-5',
                 'primary_hex' => '#FFFF00',

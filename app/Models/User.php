@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements HasAvatar, FilamentUser
 {
@@ -49,5 +50,9 @@ class User extends Authenticatable implements HasAvatar, FilamentUser
     // filament custom fields
     public function getCustomFieldsJson(): ?string{
         return json_encode($this->custom_fields);
+    }
+
+    public function posts() : HasMany{
+        return $this->hasMany(Post::class);
     }
 }

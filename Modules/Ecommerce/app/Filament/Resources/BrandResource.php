@@ -18,13 +18,9 @@ class BrandResource extends Resource
 {
     protected static ?string $model = Brand::class;
 
-    protected static ?string $navigationGroup = 'Shop';
-
-    protected static ?int $navigationSort = 1;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Form $form): Form
     {
@@ -32,11 +28,11 @@ class BrandResource extends Resource
             ->schema([
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make('Brand Info')->schema([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
                             ->unique()
-                            ->placeholder('Enter product name')
+                            ->placeholder('Enter Brand title')
                             ->required()
                             ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
                                 if ($operation !== 'create') {
@@ -85,7 +81,7 @@ class BrandResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 

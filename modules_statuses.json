@@ -1,3 +1,5 @@
 {
-    "Ecommerce": true
+    "Ecommerce": true,
+    "CMS": true,
+    "Blog": true
 }

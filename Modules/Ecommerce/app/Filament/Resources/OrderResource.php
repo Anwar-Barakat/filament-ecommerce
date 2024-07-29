@@ -22,10 +22,6 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
-    protected static ?int $navigationSort = 3;
-
-    protected static ?string $navigationGroup = 'Shop';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -68,7 +64,7 @@ class OrderResource extends Resource
                                 ->schema([
                                     Forms\Components\Select::make('product_id')
                                         ->label('Product')
-                                        ->options(Product::query()->pluck('name', 'id'))
+                                        ->options(Product::query()->pluck('title', 'id'))
                                         ->required()
                                         ->reactive()
                                         ->afterStateUpdated(fn ($state, Forms\Set $set) =>
