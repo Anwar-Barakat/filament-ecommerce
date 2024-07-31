@@ -210,6 +210,7 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('price')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => money($state,'AED'))
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('quantity')
