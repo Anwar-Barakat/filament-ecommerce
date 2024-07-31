@@ -15,7 +15,14 @@ class Product extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
-        'brand_id', 'title', 'slug', 'sku', 'description', 'image', 'quantity', 'price', 'is_visible', 'is_featured', 'type', 'published_at'
+        'brand_id', 'title', 'slug', 'sku', 'description', 'image', 'quantity', 'price', 'is_visible',
+        'is_featured', 'type', 'published_at', 'meta_description', 'variants',
+        'user_id'
+    ];
+
+    protected $casts = [
+        'published_at' => 'date',
+        'variants' => 'array'
     ];
 
     // Relationships
@@ -23,6 +30,12 @@ class Product extends Model implements HasMedia
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    // A product belongs to a user
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     // A product belongs to many categories

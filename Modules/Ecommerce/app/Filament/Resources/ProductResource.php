@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Log;
 use Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
 use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers;
+use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
 
 class ProductResource extends Resource
 {
@@ -56,10 +57,11 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Tabs::make('post')->tabs([
                     Tab::make('Product Info')->schema([
+                        Forms\Components\Hidden::make('user_id')->dehydrateStateUsing(fn ($state) => auth()->id()),
                         Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
-                            ->unique()
+                            ->unique(Product::class, 'title', ignoreRecord: true)
                             ->placeholder('Enter product title')
                             ->required()
                             ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
@@ -92,7 +94,6 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('sku')
                             ->label('SKU (Stock Keeping Unit)')
                             ->placeholder('Enter product SKU')
-                            ->unique()
                             ->required(),
 
                         Forms\Components\TextInput::make('price')
@@ -111,7 +112,34 @@ class ProductResource extends Resource
                             'deliverable' => ProductTypeEnum::DELIVERABLE->value,
                         ])->required(),
                     ])->columns(2),
+                    Tab::make('Variants')->schema([
+                        AdjacencyList::make('variants')->form([
+                            Forms\Components\TextInput::make('title')
+                                ->label('Variant Title')
+                                ->placeholder('Enter variant title')
+                                ->required(),
 
+                            Forms\Components\TextInput::make('sku')
+                                ->label('Variant SKU')
+                                ->placeholder('Enter variant SKU')
+                                ->required(),
+
+                            Forms\Components\TextInput::make('price')
+                                ->label('Variant Price')
+                                ->numeric()
+                                ->rules('regex:/^\d{1,6}(\.\d{0,2})?$/')
+                                ->required(),
+
+                            Forms\Components\TextInput::make('type')
+                                ->label('Type')
+                                ->numeric()
+                                ->minValue(0)
+                                ->maxValue(100)
+                                ->required(),
+                        ])
+                            ->label('title')
+                        ->columns(4)
+                    ])->columns(2),
                     Tab::make('Status')->schema([
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visibility')
@@ -146,7 +174,7 @@ class ProductResource extends Resource
                             ->collection('products_gallery')
                             ->multiple()
                             ->optimize('webp')
-                    ])->columns(2)
+                    ])->columns(2),
                 ])->columnSpanFull()
             ]);
     }
@@ -229,4 +257,5 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
 }
