@@ -22,7 +22,8 @@ class Product extends Model implements HasMedia
 
     protected $casts = [
         'published_at' => 'date',
-        'variants' => 'array'
+        'variants' => 'array',
+        'content' => 'array',
     ];
 
     // Relationships

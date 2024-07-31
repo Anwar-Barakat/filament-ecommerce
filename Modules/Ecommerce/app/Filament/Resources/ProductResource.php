@@ -15,6 +15,8 @@ use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
 use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
@@ -87,7 +89,13 @@ class ProductResource extends Resource
                             ->searchable()
                             ->enableBranchNode(),
 
-                        Forms\Components\MarkdownEditor::make('description')->columnSpan(2),
+                        TiptapEditor::make('content')->profile('default')
+                            ->output(TiptapOutput::Json)
+                            ->maxContentWidth('5xl')
+                            ->extraInputAttributes(['style' => 'min-height: 12rem;'])
+                            ->required()
+                            ->columnSpanFull(),
+
                         Forms\Components\TextInput::make('mete_description')->columnSpan(2),
                     ])->columns(2),
                     Tab::make('Pricing & Inventory')->schema([
@@ -138,7 +146,7 @@ class ProductResource extends Resource
                                 ->required(),
                         ])
                             ->label('title')
-                        ->columns(4)
+                            ->columns(4)
                     ])->columns(2),
                     Tab::make('Status')->schema([
                         Forms\Components\Toggle::make('is_visible')
@@ -257,5 +265,4 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
-
 }

@@ -29,6 +29,7 @@ class Post extends Model implements HasMedia
     protected $casts = [
         'is_published' => 'boolean',
         'published_at' => 'datetime',
+        'content' => 'array',
     ];
 
     // Accessors
