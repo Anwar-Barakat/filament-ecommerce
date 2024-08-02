@@ -9,6 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "awcodes/filament-tiptap-editor": "^3.0",
+        "cknow/laravel-money": "^8.1",
         "codewithdennis/filament-select-tree": "^3.1",
         "coolsam/modules": "^4",
         "filament/filament": "^3.2",

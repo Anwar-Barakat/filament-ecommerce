@@ -9,16 +9,18 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use App\Enum\ProductTypeEnum;
-use CodeWithDennis\FilamentSelectTree\SelectTree;
-use Filament\Forms\Components\Tabs\Tab;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Log;
+use Filament\Forms\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
-use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers;
 use Saade\FilamentAdjacencyList\Forms\Components\AdjacencyList;
+use Modules\Ecommerce\Filament\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -87,7 +89,13 @@ class ProductResource extends Resource
                             ->searchable()
                             ->enableBranchNode(),
 
-                        Forms\Components\MarkdownEditor::make('description')->columnSpan(2),
+                        TiptapEditor::make('content')->profile('default')
+                            ->output(TiptapOutput::Json)
+                            ->maxContentWidth('5xl')
+                            ->extraInputAttributes(['style' => 'min-height: 12rem;'])
+                            ->required()
+                            ->columnSpanFull(),
+
                         Forms\Components\TextInput::make('mete_description')->columnSpan(2),
                     ])->columns(2),
                     Tab::make('Pricing & Inventory')->schema([
@@ -138,7 +146,7 @@ class ProductResource extends Resource
                                 ->required(),
                         ])
                             ->label('title')
-                        ->columns(4)
+                            ->columns(4)
                     ])->columns(2),
                     Tab::make('Status')->schema([
                         Forms\Components\Toggle::make('is_visible')
@@ -202,6 +210,7 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('price')
                     ->sortable()
+                    ->formatStateUsing(fn($state) => money($state,'AED'))
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('quantity')
@@ -257,5 +266,4 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
-
 }

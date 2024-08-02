@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Table;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
@@ -32,7 +34,7 @@ class PostResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->autofocus()
                             ->live(onBlur: true)
-                            ->unique()
+                            ->unique(Post::class, 'title', ignoreRecord: true)
                             ->placeholder('Enter Post Title')
                             ->required()
                             ->afterStateUpdated(function (string $operation, $state, Forms\Set $set) {
@@ -48,7 +50,10 @@ class PostResource extends Resource
                             ->required()
                             ->unique(Post::class, 'slug', ignoreRecord: true),
 
-                        Forms\Components\RichEditor::make('content')
+                        TiptapEditor::make('content')->profile('default')
+                            ->output(TiptapOutput::Json)
+                            ->maxContentWidth('5xl')
+                            ->extraInputAttributes(['style' => 'min-height: 12rem;'])
                             ->required()
                             ->columnSpanFull(),
                     ])->columns(2),
@@ -97,7 +102,7 @@ class PostResource extends Resource
                             ->optimize('webp')
                     ])->columns(2)
                 ])->columnSpanFull(),
-            ]);
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -126,7 +131,7 @@ class PostResource extends Resource
                 Tables\Filters\SelectFilter::make('categories')
                     ->relationship('categories', 'title')
                     ->native(false)
-                    ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()) ,
+                    ->options(fn () => \App\Models\Category::pluck('title', 'id')->toArray()),
 
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Published')

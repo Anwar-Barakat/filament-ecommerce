@@ -3,10 +3,10 @@
 namespace Modules\Ecommerce\Filament\Resources\ProductResource\Pages;
 
 use Carbon\Carbon;
-use Modules\Ecommerce\Filament\Resources\ProductResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Resources\Pages\ListRecords\Tab;
+use Filament\Resources\Components\Tab;
+use Modules\Ecommerce\Filament\Resources\ProductResource;
 
 class ListProducts extends ListRecords
 {
