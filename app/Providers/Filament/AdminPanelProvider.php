@@ -26,7 +26,6 @@ use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Modules\Blog\Filament\Resources\PostResource;
 use Modules\Ecommerce\Filament\Resources\BrandResource;
 use Modules\Ecommerce\Filament\Resources\CategoryResource;
-use Modules\Ecommerce\Filament\Resources\CustomerResource;
 use Modules\Ecommerce\Filament\Resources\OrderResource;
 use Modules\Ecommerce\Filament\Resources\PermissionResource;
 use Modules\Ecommerce\Filament\Resources\ProductResource;
@@ -74,7 +73,6 @@ class AdminPanelProvider extends PanelProvider
                         ...ProductResource::getNavigationItems(),
                         ...BrandResource::getNavigationItems(),
                         ...OrderResource::getNavigationItems(),
-                        ...CustomerResource::getNavigationItems(),
                     ]),
                     NavigationGroup::make('Blog')->items([
                         ...PostResource::getNavigationItems(),

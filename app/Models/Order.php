@@ -13,14 +13,14 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'number', 'customer_id', 'shipping_price', 'notes', 'total_price', 'status'
+        'number', 'user_id', 'shipping_price', 'notes', 'total_price', 'status'
     ];
 
 
     // Relationships
-    // An order belongs to a customer
-    public function customer(): BelongsTo{
-        return $this->belongsTo(Customer::class);
+    // An order belongs to a user
+    public function user(): BelongsTo{
+        return $this->belongsTo(User::class);
     }
 
     // An order has many order items

@@ -3,9 +3,9 @@
 namespace Modules\Ecommerce\Filament\Widgets;
 
 use App\Enum\OrderStatusEnum;
-use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -18,8 +18,8 @@ class StatsOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Customers', Customer::count())
-                ->description('Increase in customers')
+            Stat::make('Total Users', User::count())
+                ->description('Increase in users')
                 ->descriptionIcon('heroicon-m-arrow-trending-up')
                 ->color('success')
                 ->chart([7, 3, 4, 5, 6, 3, 5, 3]),

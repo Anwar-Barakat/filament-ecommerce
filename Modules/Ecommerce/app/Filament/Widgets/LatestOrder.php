@@ -24,7 +24,7 @@ class LatestOrder extends BaseWidget
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('customer.name')
+                Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),

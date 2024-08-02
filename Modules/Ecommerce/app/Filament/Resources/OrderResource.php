@@ -35,8 +35,8 @@ class OrderResource extends Resource
                                 ->dehydrated()
                                 ->required(),
 
-                            Forms\Components\Select::make('customer_id')
-                                ->relationship('customer', 'name')
+                            Forms\Components\Select::make('user_id')
+                                ->relationship('user', 'name')
                                 ->required()
                                 ->native(),
 
@@ -105,7 +105,7 @@ class OrderResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('customer.name')
+                Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
