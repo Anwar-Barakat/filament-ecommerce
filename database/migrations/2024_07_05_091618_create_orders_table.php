@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('taxes')->nullable();
             $table->integer('discount')->nullable();
 
-            $table->enum('status', ['pending', 'processing', 'completed', 'declined'])->default('pending');
+            $table->enum('status', ['pending', 'processing', 'completed', 'declined', 'cancelled'])->default('pending');
             $table->decimal('shipping_price')->nullable();
             $table->longText('notes')->nullable();
             $table->softDeletes();

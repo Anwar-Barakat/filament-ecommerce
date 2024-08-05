@@ -110,8 +110,9 @@ class OrderResource extends Resource
                     ->sortable()
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('status')
+                Tables\Columns\SelectColumn::make('status')
                     ->searchable()
+                    ->options(OrderStatusEnum::options())
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
