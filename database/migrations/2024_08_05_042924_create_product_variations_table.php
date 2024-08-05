@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('type');
-            $table->string('SKU')->nullable();
+            $table->string('sku')->nullable();
             $table->integer('order');
             $table->decimal('price', 10, 2)->nullable();
             $table->timestamps();

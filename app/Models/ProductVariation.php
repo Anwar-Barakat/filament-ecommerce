@@ -17,14 +17,21 @@ class ProductVariation extends Model implements HasMedia
         'title',
         'slug',
         'type',
-        'SKU',
+        'sku',
         'order',
         'price',
         'parent_id'
     ];
 
-    public function product()
-    {
+    public static function boot(){
+        parent::boot();
+    }
+
+    public function parent() {
+        return $this->belongsTo(ProductVariation::class);
+    }
+
+    public function product() {
         return $this->belongsTo(Product::class);
     }
 }
