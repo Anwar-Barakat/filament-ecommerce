@@ -120,34 +120,6 @@ class ProductResource extends Resource
                             'deliverable' => ProductTypeEnum::DELIVERABLE->value,
                         ])->required(),
                     ])->columns(2),
-                    Tab::make('Variants')->schema([
-                        AdjacencyList::make('variants')->form([
-                            Forms\Components\TextInput::make('title')
-                                ->label('Variant Title')
-                                ->placeholder('Enter variant title')
-                                ->required(),
-
-                            Forms\Components\TextInput::make('sku')
-                                ->label('Variant SKU')
-                                ->placeholder('Enter variant SKU')
-                                ->required(),
-
-                            Forms\Components\TextInput::make('price')
-                                ->label('Variant Price')
-                                ->numeric()
-                                ->rules('regex:/^\d{1,6}(\.\d{0,2})?$/')
-                                ->required(),
-
-                            Forms\Components\TextInput::make('type')
-                                ->label('Type')
-                                ->numeric()
-                                ->minValue(0)
-                                ->maxValue(100)
-                                ->required(),
-                        ])
-                            ->label('title')
-                            ->columns(4)
-                    ])->columns(2),
                     Tab::make('Status')->schema([
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Visibility')
@@ -210,7 +182,7 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('price')
                     ->sortable()
-                    ->formatStateUsing(fn($state) => money($state,'AED'))
+                    ->formatStateUsing(fn ($state) => money($state, 'AED'))
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('quantity')
@@ -254,7 +226,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProductVariationsRelationManager::class,
         ];
     }
 
